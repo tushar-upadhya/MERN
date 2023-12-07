@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 
 import { Search, PencilLine } from "lucide-react";
+import CommonButton from "./common/CommonButton";
 
 const Navbar = () => {
   const [searchBoxVisibility, SetSearchBoxVisibility] = useState(false);
@@ -29,26 +30,27 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-3 md:gap-6 ml-auto">
-        <button
+        <CommonButton
           onClick={() =>
             SetSearchBoxVisibility((currentValue) => !currentValue)
           }
-          className="md:hidden bg-grey w-12 h-12 rounded-full flex items-center justify-center"
+          className="md:hidden bg-grey"
         >
           <Search className="text-xl" />
-        </button>
+        </CommonButton>
 
         <Link to={"/editor"} className="hidden md:flex gap-2 link">
           <PencilLine />
           <p>Write</p>
         </Link>
 
-        <Link className="btn-dark py-2" to={"/signin"}>
+        <CommonButton to="/signin" className="btn-dark">
           Sign In
-        </Link>
-        <Link className="btn-light py-2 hidden md:block" to={"/signup"}>
+        </CommonButton>
+
+        <CommonButton to="/signup" className="btn-light hidden md:block">
           Sign Up
-        </Link>
+        </CommonButton>
       </div>
     </nav>
   );
