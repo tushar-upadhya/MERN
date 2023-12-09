@@ -1,8 +1,8 @@
-import { Navbar } from "./components";
 import "./index.css";
+import Router from "./route/Router";
 
 function App() {
-  return <Navbar />;
+  return <Router />;
 }
 
 export default App;
