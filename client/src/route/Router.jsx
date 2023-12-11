@@ -7,7 +7,7 @@ const Router = () => {
     <Routes>
       <Route path="/" element={<Navbar />}>
         <Route path="signin" element={<UserAuthForm type={"sign-in"} />} />
-        <Route path="signup" element={<UserAuthForm type={"Sign-up"} />} />
+        <Route path="signup" element={<UserAuthForm type={"sign-up"} />} />
       </Route>
     </Routes>
   );
