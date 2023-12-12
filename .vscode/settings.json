@@ -1,4 +1,11 @@
 {
   "editor.inlineSuggest.showToolbar": "always",
-  "cSpell.words": ["gelasio", "signin", "signup"]
+  "cSpell.words": [
+    "fullname",
+    "gelasio",
+    "Kiki",
+    "notionists",
+    "signin",
+    "signup"
+  ]
 }
