@@ -3,85 +3,131 @@ import mongoose from "mongoose";
 import "dotenv/config";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
+import jwt from "jsonwebtoken";
 
-import User from "./Schema/User.js";
+import User from "./schema/User.js";
 
 const app = express();
 const PORT = 3000;
 
-//  regex format for email and password validation
+// regex for email and password validations
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+let passwordRegex =
+  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,20}$/;
 
 // middle ware
 app.use(express.json());
 
-mongoose.connect(process.env.DB_LOCATION, {
+mongoose.connect(process.env.DATABASE, {
   autoIndex: true,
 });
 
-//
-const generateUserName = async (email) => {
-  let userName = email.split("a")[0];
-  // abc@gmail.com => [abc, gmail] => abc for user
+const formatDataToSend = (user) => {
+  const accessToken = jwt.sign(
+    {
+      id: user._id,
+    },
+    process.env.SECRET_ACCESS_KEY
+  );
 
-  let isUserNameExists = await User.exists({
-    "personal_info.username": userName,
-  }).then((result) => {
-    return result;
-  });
-
-  isUserNameExists ? (userName += nanoid().substring(0, 5)) : "";
-
-  return userName;
+  return {
+    accessToken,
+    profile_img: user.personal_info.profile_img,
+    username: user.personal_info.username,
+    fullname: user.personal_info.fullname,
+  };
 };
 
-app.post("/signup", (req, res) => {
-  //   console.log("req.body:", req.body);
-  // res.json(req.body);
+const generateUserName = async (email) => {
+  let username = email.split("@")[0];
+  // as@gmail => [as, gmail]
 
+  let isUserNameNotUnique = await User.exists({
+    "personal_info.username": username,
+  }).then((result) => result);
+
+  isUserNameNotUnique ? (username += nanoid()) : "";
+
+  return username;
+};
+app.post("/signup", async (req, res) => {
   let { fullname, email, password } = req.body;
 
-  // validating the data from frontend
+  // validating data from FRONTEND
   if (fullname.length < 3) {
-    return res.status(403).json({ error: "Fullname must be 3 letter" });
+    return res
+      .status(403)
+      .json({ error: "fullname must have least 3 letters " });
   }
+
   if (!email.length) {
-    return res.status(403).json({ error: "enter email" });
+    return res.status(403).json({ error: "enter a email" });
   }
+
   if (!emailRegex.test(email)) {
-    return res.status(403).json({ error: "email is invalid" });
+    return res.status(403).json({ error: "email is invalid " });
   }
+
   if (!passwordRegex.test(password)) {
     return res.status(403).json({
       error:
-        "password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letter",
+        "password should be in 6 to 18 characters and must have numeric, 1 lowercase, 1 uppercase and 1 special character ",
     });
   }
 
-  bcrypt.hash(password, 10, async (error, hashPassword) => {
+  try {
+    let hashed_password = await bcrypt.hash(password, 10);
     let username = await generateUserName(email);
 
-    let user = new User({
-      personal_info: { fullname, email, hashPassword },
+    let user = User({
+      personal_info: { fullname, email, password: hashed_password, username },
     });
 
     user
       .save()
       .then((u) => {
-        return res.status(200).json({ user: u });
+        return res.status(200).json(formatDataToSend(u));
       })
-      .catch((err) => {
-        if (err.code === 11000) {
-          res.status(500).json({ error: "email already exits" });
+      .catch((error) => {
+        if (error.code === 11000) {
+          return res.status(500).json({ error: "email already exists" });
         }
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ error: error.message });
       });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 
-    // console.log("hashPassword:", hashPassword);
-  });
+app.post("/signin", (req, res) => {
+  let { email, password } = req.body;
 
-  // return res.status(200).json({ status: "okay" });
+  User.findOne({ "personal_info.email": email })
+    .then((user) => {
+      if (!user) {
+        return res.status(403).json({ error: "email not found" });
+      }
+
+      console.log("user:", user);
+
+      bcrypt.compare(password, user.personal_info.password, (err, result) => {
+        if (err) {
+          return res
+            .status(403)
+            .json({ err: "error occurred while login please try again" });
+        }
+
+        if (!result) {
+          return res.status(403).json({ err: "incorrect password" });
+        } else {
+          return res.status(200).json(formatDataToSend(user));
+        }
+      });
+    })
+    .catch((error) => {
+      // console.log("error:", error);
+      return res.status(500).json({ error: error.message });
+    });
 });
 
 app.listen(PORT, () => {
