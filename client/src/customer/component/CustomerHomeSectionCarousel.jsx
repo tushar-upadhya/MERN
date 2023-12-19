@@ -4,6 +4,7 @@ import HomeSectionCard from "./CustomerHomeSectionCard";
 import { Button } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { useState } from "react";
+import { mensKurta } from "../../../data/Men/menKurta";
 
 const HomeSectionCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -21,8 +22,8 @@ const HomeSectionCarousel = () => {
     1024: { items: 5.5 },
   };
 
-  const item = [1, 1, 1, 1, 2, 2, 2, 2, 1].map((item) => {
-    return <HomeSectionCard />;
+  const item = mensKurta.slice(0, 10).map((item) => {
+    return <HomeSectionCard product={item} />;
   });
 
   return (
@@ -31,10 +32,9 @@ const HomeSectionCarousel = () => {
         <AliceCarousel
           items={item}
           disableButtonsControls
-          //   autoPlay
           responsive={responsive}
           autoPlayInterval={2000}
-          infinite
+          // infinite
           disableDotsControls
           onSlideChanged={index}
           activeIndex={activeIndex}

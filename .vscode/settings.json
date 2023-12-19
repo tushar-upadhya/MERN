@@ -1,10 +1,11 @@
 {
-  "editor.inlineSuggest.showToolbar": "always",
+  "editor.inlineSuggest.showToolbar": "onHover",
   "cSpell.words": [
     "fullname",
     "gelasio",
     "gouns",
     "Kiki",
+    "Kurta",
     "lehenga",
     "maxlength",
     "notionists",
