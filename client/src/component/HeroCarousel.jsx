@@ -1,14 +1,14 @@
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import { data } from "../../../data/data.json";
+import { data } from "../../data/data.json";
 
-const CustomerCarousel = () => {
+const HeroCarousel = () => {
   const items = data.map((item, index) => (
     <img
-      key={index} // Adding a unique key for each image
+      key={index}
       className="cursor-pointer"
       src={item.imageUrl}
-      alt={`image-${index}`} // Using index for unique alt text
+      alt={`image-${index}`}
       role="presentation"
     />
   ));
@@ -24,4 +24,4 @@ const CustomerCarousel = () => {
   );
 };
 
-export default CustomerCarousel;
+export default HeroCarousel;

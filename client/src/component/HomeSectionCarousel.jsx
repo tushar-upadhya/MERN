@@ -1,10 +1,10 @@
 import AliceCarousel from "react-alice-carousel";
-import HomeSectionCard from "./CustomerHomeSectionCard";
+import HomeSectionCard from "./HomeSectionCard";
 
 import { Button } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { useState } from "react";
-import { mensKurta } from "../../../data/Men/menKurta";
+import { mensKurta } from "../../data/Men/menKurta";
 
 const HomeSectionCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);

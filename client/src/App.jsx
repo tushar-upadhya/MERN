@@ -1,5 +1,6 @@
 import "./App.css";
-import { HomePage, Navigation } from "./customer/component";
+import { Navigation } from "./component";
+import CustomerHomePage from "./pages/customer/CustomerHomePage";
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       </div>
 
       <div>
-        <HomePage />
+        <CustomerHomePage />
       </div>
     </>
   );

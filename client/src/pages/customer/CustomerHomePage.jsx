@@ -1,10 +1,9 @@
-import { HomeSectionCarousel } from "../component";
-import CustomerCarousel from "../component/CustomerHeroCarousel";
+import { HeroCarousel, HomeSectionCarousel } from "../../component";
 
-const HomePage = () => {
+const CustomerHomePage = () => {
   return (
     <div>
-      <CustomerCarousel />
+      <HeroCarousel />
 
       <div className="space-y-10 py-20 px-5 lg:px-10 flex flex-col justify-center">
         <HomeSectionCarousel />
@@ -14,4 +13,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default CustomerHomePage;
