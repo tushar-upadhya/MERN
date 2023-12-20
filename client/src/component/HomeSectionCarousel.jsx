@@ -1,20 +1,12 @@
+import { useState } from "react";
 import AliceCarousel from "react-alice-carousel";
+import { Button } from "@mui/material";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import HomeSectionCard from "./HomeSectionCard";
 
-import { Button } from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { useState } from "react";
-import { mensKurta } from "../../data/Men/menKurta";
-
-const HomeSectionCarousel = () => {
+const HomeSectionCarousel = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const left = () => setActiveIndex((current) => current - 1);
-  const right = () => setActiveIndex((current) => current + 1);
-
-  const index = (item) => {
-    setActiveIndex(item);
-  };
+  const [carouselInstance, setCarouselInstance] = useState(null);
 
   const responsive = {
     0: { items: 1 },
@@ -22,25 +14,34 @@ const HomeSectionCarousel = () => {
     1024: { items: 5.5 },
   };
 
-  const item = mensKurta.slice(0, 10).map((item) => {
-    return <HomeSectionCard product={item} />;
-  });
+  const handlePrev = () => carouselInstance.slidePrev();
+  const handleNext = () => carouselInstance.slideNext();
+
+  const items = data
+    .slice(0, 10)
+    .map((item) => <HomeSectionCard product={item} key={item.id} />);
+
+  const onSlideChanged = (e) => {
+    setActiveIndex(e.item);
+  };
 
   return (
-    <div>
-      <div className="relative p-5 ">
+    <>
+      <div className="relative p-5">
         <AliceCarousel
-          items={item}
+          items={items}
           disableButtonsControls
-          responsive={responsive}
-          autoPlayInterval={2000}
-          // infinite
           disableDotsControls
-          onSlideChanged={index}
+          responsive={responsive}
+          onSlideChanged={onSlideChanged}
           activeIndex={activeIndex}
+          dotsDisabled={true}
+          buttonsDisabled={true}
+          slideToIndex={activeIndex}
+          ref={(el) => setCarouselInstance(el)}
         />
 
-        {activeIndex !== item.length - 5 && (
+        {activeIndex !== items.length - 5 && (
           <Button
             variant="contained"
             sx={{
@@ -48,43 +49,41 @@ const HomeSectionCarousel = () => {
               top: "8rem",
               right: "0rem",
               transform: "translateX(50%) rotate(90deg)",
+              color: "white",
               bgcolor: "white",
             }}
             aria-label="next"
-            className="z-50 "
-            onClick={right}
+            onClick={handleNext}
+            className="z-50"
           >
-            <ChevronLeftIcon
-              sx={{
-                transform: "rotate(90deg)",
-                color: "black",
-              }}
+            <KeyboardArrowLeftIcon
+              sx={{ transform: "rotate(90deg)", color: "black" }}
             />
           </Button>
         )}
 
-        <Button
-          variant="contained"
-          sx={{
-            position: "absolute",
-            top: "8rem",
-            left: "0rem",
-            transform: "translateX(-50%) rotate(90deg)",
-            bgcolor: "white",
-          }}
-          aria-label="next"
-          className="z-50 "
-          onClick={left}
-        >
-          <ChevronLeftIcon
+        {activeIndex !== 0 && (
+          <Button
+            variant="contained"
             sx={{
-              transform: "rotate(-90deg)",
-              color: "black",
+              position: "absolute",
+              top: "8rem",
+              left: "0rem",
+              transform: "translateX(-50%) rotate(-90deg)",
+              color: "white",
+              bgcolor: "white",
             }}
-          />
-        </Button>
+            aria-label="next"
+            onClick={handlePrev}
+            className="z-50"
+          >
+            <KeyboardArrowLeftIcon
+              sx={{ transform: "rotate(90deg)", color: "black" }}
+            />
+          </Button>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

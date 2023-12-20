@@ -17,6 +17,7 @@ const HeroCarousel = () => {
     <AliceCarousel
       items={items}
       disableButtonsControls
+      disableDotsControls
       autoPlay
       autoPlayInterval={2000}
       infinite

@@ -1,5 +1,5 @@
 import "./App.css";
-import { Navigation } from "./component";
+import { Footer, Navigation } from "./component";
 import CustomerHomePage from "./pages/customer/CustomerHomePage";
 
 function App() {
@@ -12,8 +12,12 @@ function App() {
       <div>
         <CustomerHomePage />
       </div>
+
+      <Footer />
     </>
   );
 }
 
 export default App;
+
+//  1 47
