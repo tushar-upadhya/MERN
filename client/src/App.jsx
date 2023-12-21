@@ -1,23 +1,5 @@
-import "./App.css";
-import { Footer, Navigation } from "./component";
-import CustomerHomePage from "./pages/customer/CustomerHomePage";
-
-function App() {
-  return (
-    <>
-      <div>
-        <Navigation />
-      </div>
-
-      <div>
-        <CustomerHomePage />
-      </div>
-
-      <Footer />
-    </>
-  );
-}
+const App = () => {
+  return <div>App</div>;
+};
 
 export default App;
-
-//  1 47
