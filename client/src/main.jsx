@@ -1,5 +1,13 @@
-const main = () => {
-  return <div>main</div>;
-};
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App.jsx";
 
-export default main;
+function Main() {
+  return (
+    <div>
+      <App />
+    </div>
+  );
+}
+
+ReactDOM.render(<Main />, document.getElementById("root"));
