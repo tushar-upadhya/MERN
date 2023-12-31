@@ -1,3 +1,4 @@
+import UserAuthFormPage from "../pages/UserAuthFormPage";
 import About from "./About";
 import BlogContent from "./BlogContent";
 import BlogEditor from "./BlogEditor";
@@ -22,8 +23,11 @@ import Tags from "./Tags";
 import Tools from "./Tools";
 import UserCard from "./UserCard";
 import UserNavigation from "./UserNavigation";
+import AnimationWrapper from "./common/AnimationWrapper";
 
 export {
+  UserAuthFormPage,
+  AnimationWrapper,
   UserCard,
   UserNavigation,
   Tools,
@@ -36,7 +40,6 @@ export {
   NoBannerBlogPost,
   ManageBlogCard,
   Navbar,
-  ManageBlogCard,
   Loader,
   LoadMore,
   Input,
